@@ -1,0 +1,21 @@
+#!/bin/sh
+
+sudo sysctl -w kernel.yama.protected_sticky_symlinks=0
+
+gcc -g -w -o program vulp.c
+sudo chown root program
+sudo chmod 777 program
+
+gcc -w -o race attack.c
+
+unlink /tmp/XYZ
+rm -f /tmp/XYZ
+touch /tmp/XYZ
+chmod 777 /tmp/XYZ
+#sudo chown seed /tmp/XYZ
+
+sudo chmod u+s program
+sudo chmod g+s program
+sudo chmod u+s race
+sudo chmod g+s race
+
